@@ -1,16 +1,32 @@
 <script>
   window.onload = function() {
     console.log("SET");
-    setTimeout( function() {
-        getAndDisplayMeme();
-    }, 3000);
+    getAndDisplayMeme();
   }
 
   function getAndDisplayMeme() {
       url = getRandomMemeURL();
-      imgTag = document.getElementById("memeIMG");
+      imgElement = document.getElementById("memeIMG");
+      videoElement = document.getElementById("memeVIDEO");
 
-      imgTag.src = url;
+      postfix = url.slice(Math.max(url.length - 4, 1));
+
+      if(postfix == "webm") {
+          imgElement.style.visibility = "hidden";
+          videoElement.style.visibility = "visible";
+          videoElement.src = url;
+          timeOut = 15000;
+      } else {
+          imgElement.style.visibility = "visible";
+          videoElement.style.visibility = "hidden";
+          videoElement.src = "";
+          imgElement.src = url;
+          timeOut = 5000;
+      }
+
+      setTimeout( function() {
+          getAndDisplayMeme();
+      }, timeOut);
   }
 
   function getRandomMemeURL() {
@@ -21,8 +37,47 @@
  }
 
 </script>
+
+<style>
+body {
+    background-color: black;
+}
+
+.memeImg {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    overflow: auto;
+}
+
+.memeVid {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    overflow: auto;
+}
+
+</style>
+
+
 <body>
 hello world!
 <br>
-<img id="memeIMG" src=""\>
+<img id="memeIMG" class="memeImg" src=""\>
+
+<video width="320" height="240" autoplay="true" id="memeVIDEO" class="memeVid" loop="true">
+  <source src="movie.mp4" type="video/mp4">
+  <source src="movie.ogg" type="video/ogg">
+Your browser does not support the video tag.
+</video>
 </body>
