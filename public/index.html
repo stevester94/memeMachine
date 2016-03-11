@@ -1,15 +1,28 @@
 <script>
   window.onload = function() {
-    console.log("SET"); 
+    console.log("SET");
     setTimeout( function() {
-      
-//       location.reload(); 
-      document.body.innerHTML = "JOJ"; 
+        getAndDisplayMeme();
     }, 3000);
   }
+
+  function getAndDisplayMeme() {
+      url = getRandomMemeURL();
+      imgTag = document.getElementById("memeIMG");
+
+      imgTag.src = url;
+  }
+
+  function getRandomMemeURL() {
+     var xmlHttp = new XMLHttpRequest();
+     xmlHttp.open( "GET", "randomMeme", false ); // false for synchronous request
+     xmlHttp.send( null );
+     return xmlHttp.responseText;
+ }
+
 </script>
-<body>  
+<body>
 hello world!
 <br>
-<img src="img.jpg"\>
+<img id="memeIMG" src=""\>
 </body>

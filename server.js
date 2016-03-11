@@ -12,6 +12,10 @@ app.get('/meme', function (req, res) {
     res.sendFile("public/img.jpg");
 });
 
+app.get('/randomMeme', function (req, res) {
+    res.send("img.jpg");
+});
+
 app.listen(80, function () {
   console.log('Example app listening on port 80!');
 });
