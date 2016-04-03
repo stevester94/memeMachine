@@ -9,6 +9,7 @@ function randomIntFromInterval(min,max) {
 function getRandomMemeName() {
     dir = fs.readdirSync("public/memes/");
     randomInt = randomIntFromInterval(0, dir.length - 1);
+    console.log(randomInt);
     return "memes/" + dir[randomInt];
 }
 

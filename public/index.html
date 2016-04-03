@@ -21,7 +21,10 @@
           videoElement.style.visibility = "hidden";
           videoElement.src = "";
           imgElement.src = url;
-          timeOut = 5000;
+          if(postfix == ".gif")
+            timeOut = 10000;
+          else
+            timeOut = 5000;
       }
 
       setTimeout( function() {
@@ -51,6 +54,8 @@ body {
     right: 0;
     max-width: 100%;
     max-height: 100%;
+    min-width: 50%;
+    min-height: 75%;
     margin: auto;
     overflow: auto;
 }
@@ -63,6 +68,8 @@ body {
     right: 0;
     max-width: 100%;
     max-height: 100%;
+    min-width: 50%;
+    min-height: 75%;
     margin: auto;
     overflow: auto;
 }
@@ -75,7 +82,7 @@ hello world!
 <br>
 <img id="memeIMG" class="memeImg" src=""\>
 
-<video width="320" height="240" autoplay="true" id="memeVIDEO" class="memeVid" loop="true">
+<video autoplay="true" id="memeVIDEO" class="memeVid" loop="true">
   <source src="movie.mp4" type="video/mp4">
   <source src="movie.ogg" type="video/ogg">
 Your browser does not support the video tag.
