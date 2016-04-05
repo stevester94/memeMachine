@@ -3,18 +3,16 @@ var app = express();
 var fs = require("fs");
 
 //File upload stuff
-var multer  =   require('multer');
-
+var multer = require("multer");
 var storage =   multer.diskStorage({
-   destination: function (req, file, callback) {
-     callback(null, './uploads');
-   },
-   filename: function (req, file, callback) {
-     callback(null, file.fieldname + '-' + Date.now());
-   }
+  destination: function (req, file, callback) {
+    callback(null, './public/memes');
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.originalname);
+  }
 });
-
-var upload = multer({ storage : storage}).single('uploads');
+var upload = multer({ storage : storage}).any();
 
 
 
@@ -45,16 +43,19 @@ app.get('/randomMeme', function (req, res) {
 });
 
 app.get('/upload', function (req, res) {
-    res.sendFile("./public/upload.html");
+    res.sendFile(__dirname + '/public/upload.html');
 });
 
 app.post('/api/upload',function(req,res){
-     upload(req,res,function(err) {
-         if(err) {
-             return res.end("Error uploading file.");
-         }
-         res.end("File is uploaded");
-     });
+    upload(req,res,function(err) {
+        if(err) {
+            console.log(err);
+            return res.end("Error uploading file.");
+        }
+        res.end("File is uploaded");
+    });
+
+
 });
 
 

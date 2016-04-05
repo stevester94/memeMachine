@@ -16,6 +16,12 @@
           videoElement.style.visibility = "visible";
           videoElement.src = url;
           timeOut = 15000;
+          videoElement.addEventListener('loadedmetadata', function() {
+            timeOut = videoElement.duration * 1000;
+            setTimeout( function() {
+                getAndDisplayMeme();
+            }, timeOut);
+          });
       } else {
           imgElement.style.visibility = "visible";
           videoElement.style.visibility = "hidden";
@@ -25,11 +31,12 @@
             timeOut = 10000;
           else
             timeOut = 5000;
+        setTimeout( function() {
+            getAndDisplayMeme();
+        }, timeOut);
       }
 
-      setTimeout( function() {
-          getAndDisplayMeme();
-      }, timeOut);
+
   }
 
   function getRandomMemeURL() {
@@ -37,6 +44,11 @@
      xmlHttp.open( "GET", "randomMeme", false ); // false for synchronous request
      xmlHttp.send( null );
      return xmlHttp.responseText;
+ }
+
+ function getWebmLength(htmlElement) {
+     console.log(htmlElement.duration);
+     timeOut = htmlElement.duration * 1000;
  }
 
 </script>
