@@ -2,11 +2,16 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
+
+
+#define LOG_NAME "logs.txt"
 
 int main() {
 	pid_t pid; //Process ID
 	pid_t sid; //Session ID
 	char* strBuffer = (char*) malloc(sizeof(char) * 100);
+	int filedesc;
 
 	pid = fork(); //Returns 0 if child, or child's pid if parent
 	if(pid < 0) {
@@ -39,19 +44,30 @@ int main() {
 	// getcwd(strBuffer, 100);
 	// printf("cwd: %s", strBuffer);
 
-	/* Close out the standard file descriptors */
-	close(STDIN_FILENO);
-	// close(STDOUT_FILENO);
-	close(STDERR_FILENO);
+	// Write all std descriptors to the log
+	filedesc = open(LOG_NAME, O_WRONLY | O_APPEND);
+	if(filedesc < 0) {
+		printf("Failed to open logs\n");
+		exit(EXIT_FAILURE);
+	}
+	dup2(filedesc, STDIN_FILENO);
+	dup2(filedesc, STDOUT_FILENO);
+	dup2(filedesc, STDERR_FILENO);
 
-	/* Daemon-specific initialization goes here */
+	// Start child process of daemon
+	pid = fork();
+	if(pid == 0) //The child will then have its image replaced by the execl
+		execl("testPrint.out", NULL);
 
 	/* The Big Loop */
 	printf("Daemon running\n");
 	while (1) {
-		pid = fork();
-		if(pid == 0) //The child will then have its image replaced by the execl
-			execl("testPrint.out", NULL);
+		if(kill(pid, 0) == -1) {
+			// Child process is no longer alive
+			pid = fork();
+			if(pid == 0) //The child will then have its image replaced by the execl
+				execl("testPrint.out", NULL);
+		}
 		sleep(10); /* wait 30 seconds */
 	}
    exit(EXIT_SUCCESS);
