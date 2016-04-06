@@ -10,8 +10,7 @@
 int main() {
 	pid_t pid; //Process ID
 	pid_t sid; //Session ID
-	char* strBuffer = (char*) malloc(sizeof(char) * 100);
-	int filedesc;
+	int logDescriptor;
 
 	pid = fork(); //Returns 0 if child, or child's pid if parent
 	if(pid < 0) {
@@ -33,45 +32,35 @@ int main() {
 		exit(EXIT_FAILURE);
     }
 
-	/* Change the current working directory */
-	// Leave for example
-
-	// if ((chdir("/")) < 0) {
-	// 	printf("Error changing child directory\n");
-	// 	exit(EXIT_FAILURE);
-	// }
-
-	// getcwd(strBuffer, 100);
-	// printf("cwd: %s", strBuffer);
-
 	// Write all std descriptors to the log
-	filedesc = open(LOG_NAME, O_WRONLY | O_APPEND);
-	if(filedesc < 0) {
+	logDescriptor = open(LOG_NAME, O_WRONLY | O_APPEND);
+	if(logDescriptor < 0) {
 		printf("Failed to open logs\n");
 		exit(EXIT_FAILURE);
 	}
 
-	dup2(filedesc, STDIN_FILENO);
-	dup2(filedesc, STDOUT_FILENO);
-	dup2(filedesc, STDERR_FILENO);
+	dup2(logDescriptor, STDIN_FILENO);
+	dup2(logDescriptor, STDOUT_FILENO);
+	dup2(logDescriptor, STDERR_FILENO);
 
 	printf("STDOUT rerouted to log file\n");
 
 	// Start child process of daemon
 	pid = fork();
 	if(pid == 0) //The child will then have its image replaced by the execl
-		execl("shellPrint.sh", NULL);
+		execl("run.sh", NULL);
 
 	/* The Big Loop */
 	printf("Daemon running\n");
 	while (1) {
 		if(kill(pid, 0) == -1) {
 			// Child process is no longer alive
+			// This probably will not work for our purposes (Child becomes zombie)
 			pid = fork();
 			if(pid == 0) //The child will then have its image replaced by the execl
-				execl("shellPrint.sh", NULL);
+				execl("run.sh", NULL);
 		}
-		sleep(30); /* wait 30 seconds */
+		sleep(120); /* wait 120 seconds */
 	}
    exit(EXIT_SUCCESS);
 
