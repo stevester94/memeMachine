@@ -1,13 +1,15 @@
-<script>
+<script>  
   window.onload = function() {
-    console.log("SET");
+    console.log("SET");    
+    imgElement = document.getElementById("memeIMG");
+    videoElement = document.getElementById("memeVIDEO");   
+    videoElement.addEventListener('ended',getAndDisplayMeme,false);
     getAndDisplayMeme();
   }
 
   function getAndDisplayMeme() {
-      url = getRandomMemeURL();
-      imgElement = document.getElementById("memeIMG");
-      videoElement = document.getElementById("memeVIDEO");
+      var url = getRandomMemeURL();
+
 
       postfix = url.slice(Math.max(url.length - 4, 1));
 
@@ -15,13 +17,6 @@
           imgElement.style.visibility = "hidden";
           videoElement.style.visibility = "visible";
           videoElement.src = url;
-          timeOut = 15000;
-          videoElement.addEventListener('loadedmetadata', function() { // EVent for end of video
-            timeOut = videoElement.duration * 1000;
-            setTimeout( function() {
-                getAndDisplayMeme();
-            }, timeOut);
-          });
       } else {
           imgElement.style.visibility = "visible";
           videoElement.style.visibility = "hidden";
@@ -35,8 +30,6 @@
             getAndDisplayMeme();
         }, timeOut);
       }
-
-
   }
 
   function getRandomMemeURL() {
@@ -44,11 +37,6 @@
      xmlHttp.open( "GET", "randomMeme", false ); // false for synchronous request
      xmlHttp.send( null );
      return xmlHttp.responseText;
- }
-
- function getWebmLength(htmlElement) {
-     console.log(htmlElement.duration);
-     timeOut = htmlElement.duration * 1000;
  }
 
 </script>
@@ -95,8 +83,8 @@ hello world!
 <img id="memeIMG" class="memeImg" src=""\>
 
 <video autoplay="true" id="memeVIDEO" class="memeVid" loop="true">
-  <source src="movie.mp4" type="video/mp4">
-  <source src="movie.ogg" type="video/ogg">
+  <source src="" type="video/mp4">
 Your browser does not support the video tag.
 </video>
+  
 </body>
