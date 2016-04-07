@@ -38,7 +38,8 @@ int main() {
 		printf("Failed to open logs\n");
 		exit(EXIT_FAILURE);
 	}
-
+	printf("Attempting to reroute stdout\n");
+	
 	dup2(logDescriptor, STDIN_FILENO);
 	dup2(logDescriptor, STDOUT_FILENO);
 	dup2(logDescriptor, STDERR_FILENO);

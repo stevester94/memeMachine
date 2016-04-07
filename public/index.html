@@ -16,7 +16,7 @@
           videoElement.style.visibility = "visible";
           videoElement.src = url;
           timeOut = 15000;
-          videoElement.addEventListener('loadedmetadata', function() {
+          videoElement.addEventListener('loadedmetadata', function() { // EVent for end of video
             timeOut = videoElement.duration * 1000;
             setTimeout( function() {
                 getAndDisplayMeme();
