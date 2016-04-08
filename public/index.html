@@ -4,12 +4,15 @@
     imgElement = document.getElementById("memeIMG");
     videoElement = document.getElementById("memeVIDEO");   
     videoElement.addEventListener('ended',getAndDisplayMeme,false);
+    videoElement.addEventListener('onended', function(e) {
+      console.log("ended EVENT triggered");
+    });
     getAndDisplayMeme();
   }
 
   function getAndDisplayMeme() {
       var url = getRandomMemeURL();
-
+      console.log(url);
 
       postfix = url.slice(Math.max(url.length - 4, 1));
 
@@ -82,7 +85,7 @@ hello world!
 <br>
 <img id="memeIMG" class="memeImg" src=""\>
 
-<video autoplay="true" id="memeVIDEO" class="memeVid" loop="true">
+<video autoplay="true" id="memeVIDEO" class="memeVid">
   <source src="" type="video/mp4">
 Your browser does not support the video tag.
 </video>
