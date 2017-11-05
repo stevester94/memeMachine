@@ -5,5 +5,4 @@ Building container:
     docker build --tag=meme_machine .
 
 TODO:
-- Add volumes to docker-compose
 - Links to upload page

@@ -52,7 +52,7 @@ app.post('/api/upload',function(req,res){
             console.log(err);
             return res.end("Error uploading file.");
         }
-        res.end("File is uploaded");
+        res.end("<a href=/>Success, Back To Home</a>");
     });
 
 
