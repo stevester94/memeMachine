@@ -4,8 +4,9 @@ services:
     meme-machine:
         image: 'meme_machine:latest'
         container_name: "meme_core"
-        ports: 
+        ports: # <containter> : <host>
          - 2000:80
         restart: always
-
+        volumes:
+         - "./public/memes/:/memeMachine/public/memes/"
 
